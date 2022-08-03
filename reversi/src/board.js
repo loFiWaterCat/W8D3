@@ -164,19 +164,20 @@ Board.prototype.placePiece = function (pos, color) {
   for (let i = 0; i < Board.DIRS.length; i++) {
     let dir = Board.DIRS[i];
     let flips = undefined;
-    this._positionsToFlip(pos, color, dir, flips);
+    flips = this._positionsToFlip(pos, color, dir, flips);
     console.log(flips);
-    piecesToFlip.concat(flips);
+    piecesToFlip = piecesToFlip.concat(flips);
   };
 
   for (let i = 0; i < piecesToFlip.length; i++) {
     let [x, y] = piecesToFlip[i]
-    this.board[x][y].color = this.board[x][y].oppColor
+    this.grid[x][y].flip();
   }
-  piece = new Piece(color);
+  
+  let piece = new Piece(color);
 
   let [x, y] = pos;
-  this.board[x][y] = piece;
+  this.grid[x][y] = piece;
 };
 
 /**
