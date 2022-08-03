@@ -204,6 +204,10 @@ Board.prototype.validMoves = function (color) {
  * Checks if there are any valid moves for the given color.
  */
 Board.prototype.hasMove = function (color) {
+  if (this.validMoves(color).length !== 0) {
+    return true;
+  }
+  return false;
 };
 
 
@@ -213,9 +217,11 @@ Board.prototype.hasMove = function (color) {
  * the black player are out of moves.
  */
 Board.prototype.isOver = function () {
+  if (!this.hasMove('black') && !this.hasMove('white')) {
+    return true;
+  }
+  return false;
 };
-
-
 
 
 /**
