@@ -60,12 +60,12 @@ Board.prototype.isValidPos = function (pos) {
  */
 Board.prototype.getPiece = function (pos) {
   if (!this.isValidPos(pos)) {
-    throw 'Invalid Position';
+    throw new Error('Not valid pos!');
   }
 
   let [x, y] = pos;
   // console.log(x, y);
-  let pieceAtPos = this[x][y];
+  let pieceAtPos = this.grid[x][y];
   
   return pieceAtPos;
 };
@@ -75,12 +75,23 @@ Board.prototype.getPiece = function (pos) {
  * matches a given color.
  */
 Board.prototype.isMine = function (pos, color) {
+  if (this.getPiece(pos) === undefined ) {
+    return false;
+  };
+  if (this.getPiece(pos).color === color) {
+    return true;
+  };
+  return false;
 };
 
 /**
  * Checks if a given position has a piece on it.
  */
 Board.prototype.isOccupied = function (pos) {
+  if (this.getPiece(pos) === undefined) {
+    return false;
+  };
+  return true;
 };
 
 /**
@@ -97,6 +108,18 @@ Board.prototype.isOccupied = function (pos) {
  * Returns empty array if no pieces of the opposite color are found.
  */
 Board.prototype._positionsToFlip = function(pos, color, dir, piecesToFlip){
+  const movesToDo = [];
+  console.log("new test");
+
+  for (let i = 0; i < Board.DIRS.length; i++) {
+    const subArray = [];
+    // Build subArray then add its elements to movesToDo
+    // while loops until we hit empty position, invalid position, or another piece of teh same color
+    // inside while loop, increment position by Board.DIRS[i] and add it to subArray
+    // Empty the sub array if we hit the first two conditions
+    // Else add the array
+
+  }
 };
 
 /**
