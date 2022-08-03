@@ -4,6 +4,7 @@
   position: relative;
   border-radius: 5px;
   border: 1px solid gray;
+  display: block;
 }
 
 .profile-info {
