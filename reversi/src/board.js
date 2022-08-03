@@ -108,19 +108,24 @@ Board.prototype.isOccupied = function (pos) {
  * Returns empty array if no pieces of the opposite color are found.
  */
 Board.prototype._positionsToFlip = function(pos, color, dir, piecesToFlip){
-  const movesToDo = [];
-  console.log("new test");
-
-  for (let i = 0; i < Board.DIRS.length; i++) {
-    const subArray = [];
-    // Build subArray then add its elements to movesToDo
-    // while loops until we hit empty position, invalid position, or another piece of teh same color
-    // inside while loop, increment position by Board.DIRS[i] and add it to subArray
-    // Empty the sub array if we hit the first two conditions
-    // Else add the array
-
+  if (!piecesToFlip) {
+    piecesToFlip = [];
+  } else {
+    piecesToFlip.push(pos);
+  };
+  let [x, y] = pos;
+  let newPos = [x + dir[0], y + dir[1]];
+  if (!this.isValidPos(newPos)){
+    return [];
+  };
+  if (!this.isOccupied(newPos)){
+    return [];
+  } else if (this.getPiece(newPos).color === color){
+    return piecesToFlip;
+  } else {
+    return this._positionsToFlip(newPos, color, dir, piecesToFlip)
   }
-};
+}
 
 /**
  * Checks that a position is not already occupied and that the color
@@ -128,6 +133,18 @@ Board.prototype._positionsToFlip = function(pos, color, dir, piecesToFlip){
  * color being flipped.
  */
 Board.prototype.validMove = function (pos, color) {
+  if (!this.isValidPos(pos) || this.isOccupied(pos)) {
+    return false;
+  };
+  for (let i = 0; i < Board.DIRS.length; i++) {
+    let dir = Board.DIRS[i]
+    let piecesToFlip = undefined;
+    if (this._positionsToFlip(pos, color, dir, piecesToFlip).length !== 0) {
+      return true;
+    };
+  };
+
+  return false;
 };
 
 /**
@@ -137,6 +154,26 @@ Board.prototype.validMove = function (pos, color) {
  * Throws an error if the position represents an invalid move.
  */
 Board.prototype.placePiece = function (pos, color) {
+  if (!this.validMove(pos, color)) {
+    throw new Error('Invalid Move!');
+  };
+
+  let piecesToFlip = []
+  
+  piece = new Piece(color);
+  // Get pieces to flip
+  for (let i = 0; i < Board.DIRS.length; i++) {
+    let dir = Board.DIRS[i];
+    let flips = undefined;
+    piecesToFlip.concat(this._positionsToFlip(pos, color, dir, flips));
+  };
+
+  for (let i = 0; i < piecesToFlip.length; i++) {
+    let [x, y] = piecesToFlip[i]
+    this.board[x][y].color = this.board[x][y].oppColor
+  }
+  let [x, y] = pos;
+  this.board[x][y] = piece;
 };
 
 /**
