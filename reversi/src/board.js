@@ -160,7 +160,6 @@ Board.prototype.placePiece = function (pos, color) {
 
   let piecesToFlip = []
   
-  piece = new Piece(color);
   // Get pieces to flip
   for (let i = 0; i < Board.DIRS.length; i++) {
     let dir = Board.DIRS[i];
@@ -172,6 +171,8 @@ Board.prototype.placePiece = function (pos, color) {
     let [x, y] = piecesToFlip[i]
     this.board[x][y].color = this.board[x][y].oppColor
   }
+  piece = new Piece(color);
+
   let [x, y] = pos;
   this.board[x][y] = piece;
 };
