@@ -155,7 +155,7 @@ Board.prototype.validMove = function (pos, color) {
  */
 Board.prototype.placePiece = function (pos, color) {
   if (!this.validMove(pos, color)) {
-    throw new Error('Invalid Move!');
+    throw new Error('Invalid move!');
   };
 
   let piecesToFlip = []
@@ -164,7 +164,9 @@ Board.prototype.placePiece = function (pos, color) {
   for (let i = 0; i < Board.DIRS.length; i++) {
     let dir = Board.DIRS[i];
     let flips = undefined;
-    piecesToFlip.concat(this._positionsToFlip(pos, color, dir, flips));
+    this._positionsToFlip(pos, color, dir, flips);
+    console.log(flips);
+    piecesToFlip.concat(flips);
   };
 
   for (let i = 0; i < piecesToFlip.length; i++) {
